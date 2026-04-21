@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const NAV_LINKS = [
   { label: 'About', href: '#about' },
@@ -38,6 +38,48 @@ const GALLERY_IMAGES = [
 
 const PROFILE_PIC = '/img/gallery-3.jpg'
 const ABOUT_PHOTO = '/img/gallery-1.jpg'
+
+// Scroll reveal hook
+function useReveal(options = {}) {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.unobserve(el) } },
+      { threshold: options.threshold ?? 0.15, rootMargin: options.rootMargin ?? '0px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return [ref, visible]
+}
+
+// Animated wrapper
+function Reveal({ children, className = '', delay = 0, direction = 'up' }) {
+  const [ref, visible] = useReveal()
+
+  const dirStyles = {
+    up: 'translate-y-10',
+    down: '-translate-y-10',
+    left: 'translate-x-10',
+    right: '-translate-x-10',
+    none: '',
+  }
+
+  return (
+    <div
+      ref={ref}
+      className={`transition-all duration-700 ease-out ${visible ? 'opacity-100 translate-x-0 translate-y-0' : `opacity-0 ${dirStyles[direction]}`} ${className}`}
+      style={{ transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  )
+}
 
 function SocialIcon({ type }) {
   switch (type) {
@@ -136,9 +178,12 @@ function Nav() {
 }
 
 function Hero() {
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => { setLoaded(true) }, [])
+
   return (
     <section className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-20">
-      <div className="w-64 h-64 md:w-80 md:h-80 rounded-full mb-10 overflow-hidden border-2 border-rose/30">
+      <div className={`w-64 h-64 md:w-80 md:h-80 rounded-full mb-10 overflow-hidden border-2 border-rose/30 transition-all duration-1000 ease-out ${loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
         <img
           src={PROFILE_PIC}
           alt="Kaitlyn Edejer"
@@ -146,17 +191,17 @@ function Hero() {
         />
       </div>
 
-      <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-charcoal leading-none mb-4">
+      <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-charcoal leading-none mb-4 transition-all duration-1000 ease-out delay-200 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         Kaitlyn Edejer
       </h1>
-      <p className="text-lg md:text-xl text-warm-gray font-light tracking-wide mb-8">
+      <p className={`text-lg md:text-xl text-warm-gray font-light tracking-wide mb-8 transition-all duration-1000 ease-out delay-400 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         Digital Creator &middot; San Francisco
       </p>
-      <p className="max-w-md text-charcoal-light font-light leading-relaxed text-center mb-12">
+      <p className={`max-w-md text-charcoal-light font-light leading-relaxed text-center mb-12 transition-all duration-1000 ease-out delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
         college life, fashion, &amp; things i luv &mdash; all in one place
       </p>
 
-      <div className="flex items-center gap-5">
+      <div className={`flex items-center gap-5 transition-all duration-1000 ease-out delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {SOCIALS.map(s => (
           <a
             key={s.name}
@@ -179,32 +224,44 @@ function About() {
   return (
     <section id="about" className="py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-        <div className="aspect-[3/4] rounded-sm overflow-hidden order-2 md:order-1">
-          <img
-            src={ABOUT_PHOTO}
-            alt="Kaitlyn at the Golden Gate Bridge"
-            className="w-full h-full object-cover"
-          />
-        </div>
+        <Reveal direction="left" className="order-2 md:order-1">
+          <div className="aspect-[3/4] rounded-sm overflow-hidden">
+            <img
+              src={ABOUT_PHOTO}
+              alt="Kaitlyn at the Golden Gate Bridge"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </Reveal>
 
         <div className="order-1 md:order-2">
-          <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">About</p>
-          <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-            hiii i'm kaitlyn!
-          </h2>
-          <p className="text-charcoal-light font-light leading-relaxed mb-5">
-            digital creator, fitness instructor, and a college senior at the University of San Francisco
-            who's literally not ready to graduate yet.
-          </p>
-          <p className="text-charcoal-light font-light leading-relaxed mb-5">
-            my days are a mix of content creating, teaching sculpt classes at CorePower,
-            exploring SF with a matcha in hand, and hunting for the perfect vintage find on Poshmark.
-            also a Giants girlie and will always say yes to a day at the ballpark.
-          </p>
-          <p className="text-charcoal-light font-light leading-relaxed">
-            i believe in living for the little moments, dressing for yourself,
-            and never underestimating the power of a good playlist.
-          </p>
+          <Reveal delay={0}>
+            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">About</p>
+          </Reveal>
+          <Reveal delay={100}>
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
+              hiii i'm kaitlyn!
+            </h2>
+          </Reveal>
+          <Reveal delay={200}>
+            <p className="text-charcoal-light font-light leading-relaxed mb-5">
+              digital creator, fitness instructor, and a college senior at the University of San Francisco
+              who's literally not ready to graduate yet.
+            </p>
+          </Reveal>
+          <Reveal delay={300}>
+            <p className="text-charcoal-light font-light leading-relaxed mb-5">
+              my days are a mix of content creating, teaching sculpt classes at CorePower,
+              exploring SF with a matcha in hand, and hunting for the perfect vintage find on Poshmark.
+              also a Giants girlie and will always say yes to a day at the ballpark.
+            </p>
+          </Reveal>
+          <Reveal delay={400}>
+            <p className="text-charcoal-light font-light leading-relaxed">
+              i believe in living for the little moments, dressing for yourself,
+              and never underestimating the power of a good playlist.
+            </p>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -216,14 +273,16 @@ function Sculpt() {
     <section id="sculpt" className="py-24 md:py-32 px-6 md:px-12 bg-cream-dark">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Fitness</p>
-          <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-            Sculpt With Kaitlyn
-          </h2>
-          <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
-            high-energy sculpt classes that'll leave you feeling so good.
-            available for private events, group bookings, and pop-ups across the Bay Area.
-          </p>
+          <Reveal>
+            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Fitness</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
+              Sculpt With Kaitlyn
+            </h2>
+            <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
+              high-energy sculpt classes that'll leave you feeling so good.
+              available for private events, group bookings, and pop-ups across the Bay Area.
+            </p>
+          </Reveal>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -231,24 +290,28 @@ function Sculpt() {
             { title: 'Private Events', desc: 'customized sculpt sessions for birthdays, bachelorettes, and celebrations with your people.' },
             { title: 'Group Classes', desc: 'join a community workout in SF. all levels welcome, just bring your energy.' },
             { title: 'Pop-Ups', desc: 'collaborative fitness events with local brands and studios around the city.' },
-          ].map((item) => (
-            <div key={item.title} className="bg-cream p-8 rounded-sm text-center">
-              <h3 className="font-serif text-xl text-charcoal mb-3">{item.title}</h3>
-              <p className="text-charcoal-light font-light text-sm leading-relaxed">{item.desc}</p>
-            </div>
+          ].map((item, i) => (
+            <Reveal key={item.title} delay={i * 150}>
+              <div className="bg-cream p-8 rounded-sm text-center h-full">
+                <h3 className="font-serif text-xl text-charcoal mb-3">{item.title}</h3>
+                <p className="text-charcoal-light font-light text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <a
-            href="https://docs.google.com/forms/d/1ranJpPom8hAU1uqbLTQHb5sXI2V574UqFitPK3BmlXY/edit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-8 py-3 border border-charcoal text-charcoal text-sm tracking-widest uppercase hover:bg-charcoal hover:text-cream transition-all duration-300"
-          >
-            Book a Session
-          </a>
-        </div>
+        <Reveal delay={500}>
+          <div className="text-center mt-12">
+            <a
+              href="https://docs.google.com/forms/d/1ranJpPom8hAU1uqbLTQHb5sXI2V574UqFitPK3BmlXY/edit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-3 border border-charcoal text-charcoal text-sm tracking-widest uppercase hover:bg-charcoal hover:text-cream transition-all duration-300"
+            >
+              Book a Session
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
@@ -259,33 +322,36 @@ function Shop() {
     <section id="shop" className="py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Shop</p>
-          <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-            Shop My Favorites
-          </h2>
-          <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
-            everything i love, all in one place. from daily essentials to curated finds.
-          </p>
+          <Reveal>
+            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Shop</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
+              Shop My Favorites
+            </h2>
+            <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
+              everything i love, all in one place. from daily essentials to curated finds.
+            </p>
+          </Reveal>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {SHOPS.map((shop) => (
-            <a
-              key={shop.name}
-              href={shop.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group block p-8 rounded-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              style={{ backgroundColor: shop.color }}
-            >
-              <h3 className="font-serif text-lg text-charcoal mb-2 group-hover:text-rose-dark transition-colors">
-                {shop.name}
-              </h3>
-              <p className="text-charcoal-light font-light text-sm">{shop.desc}</p>
-              <span className="inline-block mt-4 text-xs tracking-widest uppercase text-rose-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Visit &rarr;
-              </span>
-            </a>
+          {SHOPS.map((shop, i) => (
+            <Reveal key={shop.name} delay={i * 100}>
+              <a
+                href={shop.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block p-8 rounded-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg h-full"
+                style={{ backgroundColor: shop.color }}
+              >
+                <h3 className="font-serif text-lg text-charcoal mb-2 group-hover:text-rose-dark transition-colors">
+                  {shop.name}
+                </h3>
+                <p className="text-charcoal-light font-light text-sm">{shop.desc}</p>
+                <span className="inline-block mt-4 text-xs tracking-widest uppercase text-rose-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  Visit &rarr;
+                </span>
+              </a>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -298,42 +364,47 @@ function Gallery() {
     <section id="gallery" className="py-24 md:py-32 px-6 md:px-12 bg-cream-dark">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Gallery</p>
-          <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight">
-            Moments
-          </h2>
+          <Reveal>
+            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Gallery</p>
+            <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight">
+              Moments
+            </h2>
+          </Reveal>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {GALLERY_IMAGES.map((img, i) => (
-            <a
-              key={i}
-              href={img.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group aspect-square rounded-sm overflow-hidden"
-            >
-              <img
-                src={img.src}
-                alt={img.alt}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-            </a>
+            <Reveal key={i} delay={i * 80}>
+              <a
+                href={img.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group aspect-square rounded-sm overflow-hidden block"
+              >
+                <img
+                  src={img.src}
+                  alt={img.alt}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+              </a>
+            </Reveal>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <a
-            href="https://instagram.com/kaitlynedejer"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm tracking-widest uppercase text-charcoal-light hover:text-rose-dark transition-colors"
-          >
-            <SocialIcon type="ig" />
-            Follow Along
-          </a>
-        </div>
+        <Reveal delay={700}>
+          <div className="text-center mt-12">
+            <a
+              href="https://instagram.com/kaitlynedejer"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm tracking-widest uppercase text-charcoal-light hover:text-rose-dark transition-colors"
+            >
+              <SocialIcon type="ig" />
+              Follow Along
+            </a>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
@@ -343,36 +414,44 @@ function Contact() {
   return (
     <section id="contact" className="py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-3xl mx-auto text-center">
-        <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Get In Touch</p>
-        <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-          Let's Work Together
-        </h2>
-        <p className="text-charcoal-light font-light leading-relaxed mb-10 max-w-lg mx-auto">
-          interested in collaborations, brand partnerships, or booking a sculpt session?
-          i'd love to hear from you.
-        </p>
+        <Reveal>
+          <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Get In Touch</p>
+          <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
+            Let's Work Together
+          </h2>
+        </Reveal>
+        <Reveal delay={150}>
+          <p className="text-charcoal-light font-light leading-relaxed mb-10 max-w-lg mx-auto">
+            interested in collaborations, brand partnerships, or booking a sculpt session?
+            i'd love to hear from you.
+          </p>
+        </Reveal>
 
-        <a
-          href="mailto:kaitlynedejer@yahoo.com"
-          className="inline-block px-10 py-4 bg-charcoal text-cream text-sm tracking-widest uppercase hover:bg-rose-dark transition-colors duration-300"
-        >
-          Say Hello
-        </a>
+        <Reveal delay={300}>
+          <a
+            href="mailto:kaitlynedejer@yahoo.com"
+            className="inline-block px-10 py-4 bg-charcoal text-cream text-sm tracking-widest uppercase hover:bg-rose-dark transition-colors duration-300"
+          >
+            Say Hello
+          </a>
+        </Reveal>
 
-        <div className="flex items-center justify-center gap-6 mt-12">
-          {SOCIALS.map(s => (
-            <a
-              key={s.name}
-              href={s.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.name}
-              className="text-charcoal-light hover:text-rose-dark transition-colors duration-300"
-            >
-              <SocialIcon type={s.icon} />
-            </a>
-          ))}
-        </div>
+        <Reveal delay={450}>
+          <div className="flex items-center justify-center gap-6 mt-12">
+            {SOCIALS.map(s => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.name}
+                className="text-charcoal-light hover:text-rose-dark transition-colors duration-300"
+              >
+                <SocialIcon type={s.icon} />
+              </a>
+            ))}
+          </div>
+        </Reveal>
       </div>
     </section>
   )
