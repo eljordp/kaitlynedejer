@@ -17,13 +17,27 @@ const SOCIALS = [
 ]
 
 const SHOPS = [
-  { name: 'ShopMy', desc: 'Curated favorites', url: 'https://shopmy.us/shop/kaitlynedejerr', color: '#F8E8E0' },
-  { name: 'Amazon Storefront', desc: 'Top picks & essentials', url: 'https://www.amazon.com/shop/kaitlynedejer', color: '#E8F0E8' },
-  { name: 'Poshmark', desc: 'Pre-loved closet', url: 'https://poshmark.com/closet/kaitlynedejer', color: '#E8E4F0' },
-  { name: 'LikeToKnowIt', desc: 'Outfit details & links', url: 'https://www.shopltk.com/explore/kaitlynedejer', color: '#F0E8E4' },
-  { name: 'Presets Shop', desc: 'Photo editing presets', url: 'https://www.etsy.com/shop/KKsPresetsShop', color: '#E4ECF0' },
-  { name: 'TikTok Shop', desc: 'Trending products', url: 'https://vt.tiktok.com/ZTNU9FA1S/?page=TikTokShop', color: '#F0E4EA' },
+  { name: 'ShopMy', desc: 'my curated favorites', url: 'https://shopmy.us/shop/kaitlynedejerr', color: '#F8E8E0' },
+  { name: 'Amazon Storefront', desc: 'top picks & daily essentials', url: 'https://www.amazon.com/shop/kaitlynedejer', color: '#E8F0E8' },
+  { name: 'Poshmark', desc: 'my pre-loved closet', url: 'https://poshmark.com/closet/kaitlynedejer', color: '#E8E4F0' },
+  { name: 'LikeToKnowIt', desc: 'outfit details & links', url: 'https://www.shopltk.com/explore/kaitlynedejer', color: '#F0E8E4' },
+  { name: 'KK\'s Presets', desc: 'photo editing presets', url: 'https://www.etsy.com/shop/KKsPresetsShop', color: '#E4ECF0' },
+  { name: 'TikTok Shop', desc: 'trending products i luv', url: 'https://vt.tiktok.com/ZTNU9FA1S/?page=TikTokShop', color: '#F0E4EA' },
 ]
+
+const GALLERY_IMAGES = [
+  { src: '/img/gallery-1.jpg', alt: 'Golden Gate Bridge day', link: 'https://instagram.com/p/DXXZyKxEvpu/' },
+  { src: '/img/gallery-2.jpg', alt: 'Sporty active fit', link: 'https://instagram.com/p/DXUyD1sj3Ev/' },
+  { src: '/img/gallery-3.jpg', alt: 'Outfit of the day', link: 'https://instagram.com/p/DXPkqcPD-Pg/' },
+  { src: '/img/gallery-4.jpg', alt: 'SF vibes', link: 'https://instagram.com/p/DXM9_qBjzAW/' },
+  { src: '/img/gallery-5.jpg', alt: 'Turtleneck look', link: 'https://instagram.com/p/DXKVPu0CfBQ/' },
+  { src: '/img/gallery-6.jpg', alt: 'Sisters night out', link: 'https://instagram.com/p/DXKORz8gS_B/' },
+  { src: '/img/gallery-7.jpg', alt: 'Checkered outfit', link: 'https://instagram.com/p/DXH5XmjD1iC/' },
+  { src: '/img/gallery-8.jpg', alt: 'College senior vibes', link: 'https://instagram.com/p/DXHz_gND_PV/' },
+]
+
+const PROFILE_PIC = '/img/profile.jpg'
+const ABOUT_PHOTO = '/img/gallery-1.jpg'
 
 function SocialIcon({ type }) {
   switch (type) {
@@ -81,7 +95,6 @@ function Nav() {
           Kaitlyn Edejer
         </a>
 
-        {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map(link => (
             <a
@@ -94,7 +107,6 @@ function Nav() {
           ))}
         </div>
 
-        {/* Mobile menu button */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden flex flex-col gap-1.5 p-2 bg-transparent border-none cursor-pointer"
@@ -105,7 +117,6 @@ function Nav() {
         </button>
       </div>
 
-      {/* Mobile menu */}
       <div className={`md:hidden overflow-hidden transition-all duration-500 bg-cream/95 backdrop-blur-md ${menuOpen ? 'max-h-80' : 'max-h-0'}`}>
         <div className="flex flex-col items-center gap-6 py-8">
           {NAV_LINKS.map(link => (
@@ -127,9 +138,12 @@ function Nav() {
 function Hero() {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-20">
-      {/* Photo placeholder */}
-      <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-rose-light/60 mb-10 flex items-center justify-center overflow-hidden border-2 border-rose/30">
-        <span className="text-warm-gray text-sm tracking-wide">Photo</span>
+      <div className="w-64 h-64 md:w-80 md:h-80 rounded-full mb-10 overflow-hidden border-2 border-rose/30">
+        <img
+          src={PROFILE_PIC}
+          alt="Kaitlyn Edejer"
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-charcoal leading-none mb-4">
@@ -139,10 +153,9 @@ function Hero() {
         Digital Creator &middot; San Francisco
       </p>
       <p className="max-w-md text-charcoal-light font-light leading-relaxed text-center mb-12">
-        College life, fashion, fitness, and all the things I love &mdash; curated in one place.
+        college life, fashion, &amp; things i luv &mdash; all in one place
       </p>
 
-      {/* Social row */}
       <div className="flex items-center gap-5">
         {SOCIALS.map(s => (
           <a
@@ -158,7 +171,6 @@ function Hero() {
         ))}
       </div>
 
-      {/* Scroll indicator */}
       <a href="#about" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-warm-gray hover:text-rose-dark transition-colors">
         <span className="text-xs tracking-widest uppercase">Scroll</span>
         <svg className="w-4 h-4 animate-bounce" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -173,26 +185,30 @@ function About() {
   return (
     <section id="about" className="py-24 md:py-32 px-6 md:px-12">
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
-        {/* Photo placeholder */}
-        <div className="aspect-[3/4] bg-cream-dark rounded-sm flex items-center justify-center order-2 md:order-1">
-          <span className="text-warm-gray text-sm tracking-wide">Photo</span>
+        <div className="aspect-[3/4] rounded-sm overflow-hidden order-2 md:order-1">
+          <img
+            src={ABOUT_PHOTO}
+            alt="Kaitlyn at the Golden Gate Bridge"
+            className="w-full h-full object-cover"
+          />
         </div>
 
         <div className="order-1 md:order-2">
           <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">About</p>
           <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-            Nice to meet you
+            hiii i'm kaitlyn!
           </h2>
           <p className="text-charcoal-light font-light leading-relaxed mb-5">
-            Hey, I'm Kaitlyn! I'm a digital creator and fitness instructor based in San Francisco.
-            My world revolves around fashion, wellness, and sharing the moments that make life beautiful.
+            digital creator, fitness instructor, and a college senior at the University of San Francisco
+            who's literally not ready to graduate yet.
           </p>
           <p className="text-charcoal-light font-light leading-relaxed mb-5">
-            When I'm not creating content, you can find me teaching Sculpt classes,
-            exploring the city, or hunting for the perfect vintage find on Poshmark.
+            my days are a mix of content creating, teaching sculpt classes at CorePower,
+            exploring SF with a matcha in hand, and hunting for the perfect vintage find on Poshmark.
+            also a Giants girlie and will always say yes to a day at the ballpark.
           </p>
           <p className="text-charcoal-light font-light leading-relaxed">
-            I believe in living intentionally, dressing for yourself,
+            i believe in living for the little moments, dressing for yourself,
             and never underestimating the power of a good playlist.
           </p>
         </div>
@@ -211,16 +227,16 @@ function Sculpt() {
             Sculpt With Kaitlyn
           </h2>
           <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
-            High-energy sculpt classes designed to challenge, inspire, and leave you feeling stronger.
-            Available for private events, group bookings, and pop-up classes across the Bay Area.
+            high-energy sculpt classes that'll leave you feeling so good.
+            available for private events, group bookings, and pop-ups across the Bay Area.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { title: 'Private Events', desc: 'Customized sculpt sessions for birthdays, bachelorettes, and celebrations.' },
-            { title: 'Group Classes', desc: 'Join a community workout in SF. All levels welcome, just bring your energy.' },
-            { title: 'Pop-Ups', desc: 'Collaborative fitness events with local brands and studios.' },
+            { title: 'Private Events', desc: 'customized sculpt sessions for birthdays, bachelorettes, and celebrations with your people.' },
+            { title: 'Group Classes', desc: 'join a community workout in SF. all levels welcome, just bring your energy.' },
+            { title: 'Pop-Ups', desc: 'collaborative fitness events with local brands and studios around the city.' },
           ].map((item) => (
             <div key={item.title} className="bg-cream p-8 rounded-sm text-center">
               <h3 className="font-serif text-xl text-charcoal mb-3">{item.title}</h3>
@@ -254,7 +270,7 @@ function Shop() {
             Shop My Favorites
           </h2>
           <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
-            Everything I love, all in one place. From daily essentials to curated finds.
+            everything i love, all in one place. from daily essentials to curated finds.
           </p>
         </div>
 
@@ -294,19 +310,23 @@ function Gallery() {
           </h2>
         </div>
 
-        {/* Photo grid — placeholders for her content */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {Array.from({ length: 8 }).map((_, i) => {
-            const heights = ['aspect-square', 'aspect-[3/4]', 'aspect-square', 'aspect-[4/3]', 'aspect-[3/4]', 'aspect-square', 'aspect-[4/3]', 'aspect-square']
-            return (
-              <div
-                key={i}
-                className={`${heights[i]} bg-rose-light/30 rounded-sm flex items-center justify-center`}
-              >
-                <span className="text-warm-gray text-xs tracking-wide">Photo {i + 1}</span>
-              </div>
-            )
-          })}
+          {GALLERY_IMAGES.map((img, i) => (
+            <a
+              key={i}
+              href={img.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group aspect-square rounded-sm overflow-hidden"
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+              />
+            </a>
+          ))}
         </div>
 
         <div className="text-center mt-12">
@@ -334,8 +354,8 @@ function Contact() {
           Let's Work Together
         </h2>
         <p className="text-charcoal-light font-light leading-relaxed mb-10 max-w-lg mx-auto">
-          Interested in collaborations, brand partnerships, or booking a Sculpt session?
-          I'd love to hear from you.
+          interested in collaborations, brand partnerships, or booking a sculpt session?
+          i'd love to hear from you.
         </p>
 
         <a
