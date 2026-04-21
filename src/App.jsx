@@ -36,7 +36,7 @@ const GALLERY_IMAGES = [
   { src: '/img/gallery-8.jpg', alt: 'College senior vibes', link: 'https://instagram.com/p/DXHz_gND_PV/' },
 ]
 
-const PROFILE_PIC = '/img/profile.jpg'
+const PROFILE_PIC = '/img/gallery-3.jpg'
 const ABOUT_PHOTO = '/img/gallery-1.jpg'
 
 function SocialIcon({ type }) {
@@ -171,12 +171,6 @@ function Hero() {
         ))}
       </div>
 
-      <a href="#about" className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-warm-gray hover:text-rose-dark transition-colors">
-        <span className="text-xs tracking-widest uppercase">Scroll</span>
-        <svg className="w-4 h-4 animate-bounce" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M3 6l5 5 5-5" />
-        </svg>
-      </a>
     </section>
   )
 }
