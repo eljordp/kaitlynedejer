@@ -284,10 +284,10 @@ function LoveTicker() {
   const items = ['matcha mornings', 'giants games', 'poshmark finds', 'sculpt class', 'golden hour', 'sf fog', 'a good playlist', 'vintage denim', 'cozy sweaters', 'bookshop dates']
   const full = [...items, ...items]
   return (
-    <div className="relative overflow-hidden py-5 md:py-7 border-y border-ink/15 bg-paper-dark/60">
-      <div className="flex gap-12 md:gap-16 whitespace-nowrap ticker-track">
+    <div className="relative overflow-hidden py-4 md:py-7 border-y border-ink/15 bg-paper-dark/60">
+      <div className="flex gap-8 md:gap-16 whitespace-nowrap ticker-track">
         {full.map((t, i) => (
-          <span key={i} className="inline-flex items-center gap-12 md:gap-16 font-serif italic text-ink text-2xl md:text-4xl">
+          <span key={i} className="inline-flex items-center gap-8 md:gap-16 font-serif italic text-ink text-lg md:text-4xl">
             {t}
             <span className="text-terracotta">✦</span>
           </span>
