@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 
 const NAV_LINKS = [
-  { label: 'about', href: '#about', num: '01' },
-  { label: 'sculpt', href: '#sculpt', num: '02' },
-  { label: 'shop', href: '#shop', num: '03' },
+  { label: 'shop', href: '#shop', num: '01' },
+  { label: 'about', href: '#about', num: '02' },
+  { label: 'sculpt', href: '#sculpt', num: '03' },
   { label: 'gallery', href: '#gallery', num: '04' },
   { label: 'say hi', href: '#contact', num: '05' },
 ]
@@ -249,6 +249,16 @@ function Hero() {
             </p>
           </Reveal>
           <Reveal delay={500}>
+            <a
+              href="#shop"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-terracotta text-cream text-[13px] tracking-[0.25em] uppercase hover:bg-ink transition-colors duration-300 min-h-[52px] mb-8"
+            >
+              shop the edit
+              <span className="group-hover:translate-x-1 transition-transform">↓</span>
+            </a>
+          </Reveal>
+
+          <Reveal delay={620}>
             <div className="flex items-center gap-5">
               {SOCIALS.map(s => (
                 <a
@@ -315,7 +325,7 @@ function About() {
         <div className="md:col-span-6 md:col-start-7 md:pt-20">
           <Reveal>
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="scrawl text-terracotta text-3xl">01</span>
+              <span className="scrawl text-terracotta text-3xl">02</span>
               <span className="uppercase tracking-[0.3em] text-[11px] text-ink-fade">about the girl</span>
               <span className="flex-1 border-b border-ink/15 mb-2"></span>
             </div>
@@ -360,7 +370,7 @@ function Sculpt() {
       <div className="max-w-6xl mx-auto">
         <Reveal>
           <div className="flex items-baseline gap-3 mb-6">
-            <span className="scrawl text-terracotta text-3xl">02</span>
+            <span className="scrawl text-terracotta text-3xl">03</span>
             <span className="uppercase tracking-[0.3em] text-[11px] text-ink-fade">move with me</span>
             <span className="flex-1 border-b border-ink/15 mb-2"></span>
           </div>
@@ -416,70 +426,63 @@ function Sculpt() {
 
 function Shop() {
   return (
-    <section id="shop" className="py-24 md:py-36 relative">
-      <div className="max-w-6xl mx-auto px-5 md:px-10">
+    <section id="shop" className="py-20 md:py-28 px-5 md:px-10 relative bg-cream/60">
+      <div className="max-w-6xl mx-auto">
         <Reveal>
           <div className="flex items-baseline gap-3 mb-6">
-            <span className="scrawl text-terracotta text-3xl">03</span>
-            <span className="uppercase tracking-[0.3em] text-[11px] text-ink-fade">the edit</span>
+            <span className="scrawl text-terracotta text-3xl">01</span>
+            <span className="uppercase tracking-[0.3em] text-[11px] text-ink-fade">the edit — shop everything</span>
             <span className="flex-1 border-b border-ink/15 mb-2"></span>
           </div>
         </Reveal>
 
-        <div className="grid md:grid-cols-12 gap-8 md:gap-12 mb-14">
+        <div className="grid md:grid-cols-12 gap-6 md:gap-10 mb-10 md:mb-14">
           <div className="md:col-span-7">
-            <Reveal delay={100}>
-              <h2 className="font-serif text-5xl md:text-7xl font-light text-ink leading-[0.95]">
+            <Reveal delay={80}>
+              <h2 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light text-ink leading-[0.92]">
                 shop <span className="italic">my</span><br />favorites.
               </h2>
             </Reveal>
           </div>
-          <div className="md:col-span-5 md:pt-6">
-            <Reveal delay={200}>
-              <p className="text-ink-soft text-[17px] leading-relaxed">
-                everything i love, all in one place. from daily essentials to the vintage finds
-                i'll never stop hunting for.
+          <div className="md:col-span-5 md:pt-8">
+            <Reveal delay={160}>
+              <p className="text-ink-soft text-[17px] md:text-lg leading-relaxed">
+                everything i love, all in one place. tap any card to shop.
               </p>
             </Reveal>
           </div>
         </div>
-      </div>
 
-      <Reveal>
-        <div className="overflow-x-auto pb-8 -mx-5 px-5 md:-mx-10 md:px-10 scrollbar-none">
-          <div className="flex gap-6 md:gap-8 min-w-min">
-            {SHOPS.map((shop, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {SHOPS.map((shop, i) => (
+            <Reveal key={shop.name} delay={i * 60}>
               <a
-                key={shop.name}
                 href={shop.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group shrink-0 w-[240px] md:w-[280px] bg-cream p-5 pb-10 border border-ink/10 hover:border-terracotta/60 transition-all duration-500 hover:-translate-y-1 relative"
-                style={{ transform: `rotate(${i % 2 === 0 ? -1 : 1}deg)` }}
+                className="group relative block bg-cream p-6 md:p-7 border border-ink/15 hover:border-terracotta hover:bg-paper transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_36px_-12px_rgba(31,27,21,0.25)] min-h-[140px] md:min-h-[180px]"
               >
-                <div className="aspect-[3/4] bg-paper-dark mb-4 overflow-hidden relative flex items-center justify-center">
-                  <span className="font-serif italic text-4xl md:text-5xl text-ink/30">{shop.name.charAt(0)}</span>
-                  <span className="absolute top-3 left-3 text-[10px] tracking-[0.2em] uppercase text-ink-fade bg-cream/80 px-2 py-1">no. 0{i + 1}</span>
-                </div>
-                <div className="flex items-start justify-between gap-2">
+                <span className="absolute top-4 right-5 text-[10px] tracking-[0.2em] uppercase text-ink-fade">no. 0{i + 1}</span>
+                <div className="flex flex-col h-full justify-between gap-4">
                   <div>
-                    <h3 className="font-serif text-xl md:text-2xl text-ink leading-tight mb-1">{shop.name}</h3>
-                    <p className="text-ink-fade text-[13px]">{shop.desc}</p>
+                    <h3 className="font-serif text-3xl md:text-4xl text-ink leading-[0.95] mb-2 group-hover:text-terracotta transition-colors">
+                      {shop.name}
+                    </h3>
+                    <p className="text-ink-soft text-[14px] md:text-[15px]">{shop.desc}</p>
                   </div>
-                  <span className="scrawl text-terracotta text-lg whitespace-nowrap rotate-[-6deg] leading-tight text-right">{shop.note}</span>
+                  <div className="flex items-end justify-between gap-3 pt-2">
+                    <span className="scrawl text-terracotta text-lg md:text-xl leading-tight rotate-[-3deg]">
+                      {shop.note}
+                    </span>
+                    <span className="text-[11px] tracking-[0.2em] uppercase text-ink group-hover:text-terracotta transition-colors whitespace-nowrap">
+                      shop →
+                    </span>
+                  </div>
                 </div>
-                <span className="absolute bottom-3 right-5 text-[11px] tracking-[0.2em] uppercase text-ink-fade group-hover:text-terracotta transition-colors">
-                  visit →
-                </span>
               </a>
-            ))}
-            <div className="shrink-0 w-5 md:w-10"></div>
-          </div>
+            </Reveal>
+          ))}
         </div>
-      </Reveal>
-
-      <div className="max-w-6xl mx-auto px-5 md:px-10 mt-3">
-        <span className="scrawl text-ink-fade text-lg">← swipe →</span>
       </div>
     </section>
   )
@@ -626,10 +629,10 @@ export default function App() {
     <div className="overflow-x-hidden">
       <Nav />
       <Hero />
+      <Shop />
       <LoveTicker />
       <About />
       <Sculpt />
-      <Shop />
       <Gallery />
       <Contact />
       <Footer />
