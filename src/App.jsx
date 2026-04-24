@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 
 const NAV_LINKS = [
-  { label: 'Shop', href: '#shop' },
   { label: 'About', href: '#about' },
+  { label: 'Shop', href: '#shop' },
   { label: 'Sculpt', href: '#sculpt' },
   { label: 'Brands', href: '#brands' },
   { label: 'Contact', href: '#contact' },
@@ -784,10 +784,10 @@ export default function App() {
       <Nav />
       <Hero />
       <Marquee />
-      <Shop />
-      <Collective />
       <About />
+      <Shop />
       <Sculpt />
+      <Collective />
       <Brands />
       <Gallery />
       <Contact />
