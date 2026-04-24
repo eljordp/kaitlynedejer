@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 
 const NAV_LINKS = [
+  { label: 'Shop', href: '#shop' },
   { label: 'About', href: '#about' },
   { label: 'Sculpt', href: '#sculpt' },
-  { label: 'Shop', href: '#shop' },
   { label: 'Gallery', href: '#gallery' },
   { label: 'Contact', href: '#contact' },
 ]
@@ -177,70 +177,136 @@ function Nav() {
   )
 }
 
+function Sparkle({ className = '' }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M12 0l2.4 8.4L24 12l-9.6 3.6L12 24l-2.4-8.4L0 12l9.6-3.6L12 0z" />
+    </svg>
+  )
+}
+
+function Heart({ className = '' }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M12 21s-7-4.35-9.5-9.5C.85 7.5 3 4 6.5 4c2 0 3.5 1 5.5 3 2-2 3.5-3 5.5-3 3.5 0 5.65 3.5 4 7.5C19 16.65 12 21 12 21z" />
+    </svg>
+  )
+}
+
+function Marquee() {
+  const items = ['college life', 'matcha mornings', 'sculpt classes', 'sf days', 'poshmark finds', 'giants games', 'fashion edits', 'shop my favs']
+  return (
+    <div className="bg-pink-deep text-cream py-4 overflow-hidden border-y border-pink-darker/20">
+      <div className="flex animate-marquee whitespace-nowrap">
+        {[...items, ...items, ...items].map((item, i) => (
+          <span key={i} className="font-serif text-lg md:text-xl italic mx-6 flex items-center gap-6">
+            {item}
+            <Sparkle className="w-3 h-3" />
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Hero() {
   const [loaded, setLoaded] = useState(false)
   useEffect(() => { setLoaded(true) }, [])
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-20">
-      <div className={`w-64 h-64 md:w-80 md:h-80 rounded-full mb-10 overflow-hidden border-2 border-rose/30 transition-all duration-1000 ease-out ${loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-        <img
-          src={PROFILE_PIC}
-          alt="Kaitlyn Edejer"
-          className="w-full h-full object-cover"
-        />
+    <section className="min-h-screen flex flex-col items-center justify-center relative px-6 pt-20 pb-12 overflow-hidden">
+      {/* Decorative blobs */}
+      <div className="absolute top-32 -left-20 w-72 h-72 rounded-full bg-pink-soft/60 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-20 -right-20 w-80 h-80 rounded-full bg-pink-light/40 blur-3xl pointer-events-none" />
+
+      {/* Floating decorations */}
+      <Sparkle className="absolute top-28 right-12 md:right-32 w-5 h-5 text-pink-deep animate-float" />
+      <Heart className="absolute top-1/3 left-8 md:left-32 w-4 h-4 text-pink animate-float-slow" />
+      <Sparkle className="absolute bottom-32 left-16 md:left-1/4 w-4 h-4 text-pink-deep animate-float-slow" />
+      <Heart className="absolute bottom-40 right-10 md:right-1/4 w-5 h-5 text-pink animate-float" />
+
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Photo with pink ring accent */}
+        <div className={`relative mb-10 transition-all duration-1000 ease-out ${loaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
+          <div className="absolute -inset-3 rounded-full bg-gradient-to-br from-pink-light via-pink to-pink-deep opacity-40 blur-md" />
+          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden ring-4 ring-cream shadow-xl shadow-pink/30">
+            <img
+              src={PROFILE_PIC}
+              alt="Kaitlyn Edejer"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-charcoal leading-none mb-4 text-center transition-all duration-1000 ease-out delay-200 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          Kaitlyn Edejer
+        </h1>
+
+        <div className={`flex items-center gap-3 mb-6 transition-all duration-1000 ease-out delay-400 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          <span className="h-px w-8 bg-pink-deep" />
+          <p className="text-base md:text-lg text-pink-darker font-serif italic tracking-wide">
+            Digital Creator
+          </p>
+          <Sparkle className="w-3 h-3 text-pink-deep" />
+          <p className="text-base md:text-lg text-pink-darker font-serif italic tracking-wide">
+            San Francisco
+          </p>
+          <span className="h-px w-8 bg-pink-deep" />
+        </div>
+
+        <p className={`max-w-md text-charcoal-light font-light leading-relaxed text-center mb-10 transition-all duration-1000 ease-out delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+          college life, fashion, &amp; things i luv &mdash; all in one place <Heart className="inline w-3 h-3 text-pink-deep -mt-1" />
+        </p>
+
+        <div className={`flex items-center gap-5 transition-all duration-1000 ease-out delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          {SOCIALS.map(s => (
+            <a
+              key={s.name}
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.name}
+              className="text-charcoal-light hover:text-pink-deep hover:scale-110 transition-all duration-300"
+            >
+              <SocialIcon type={s.icon} />
+            </a>
+          ))}
+        </div>
       </div>
-
-      <h1 className={`font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-tight text-charcoal leading-none mb-4 transition-all duration-1000 ease-out delay-200 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        Kaitlyn Edejer
-      </h1>
-      <p className={`text-lg md:text-xl text-warm-gray font-light tracking-wide mb-8 transition-all duration-1000 ease-out delay-400 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        Digital Creator &middot; San Francisco
-      </p>
-      <p className={`max-w-md text-charcoal-light font-light leading-relaxed text-center mb-12 transition-all duration-1000 ease-out delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-        college life, fashion, &amp; things i luv &mdash; all in one place
-      </p>
-
-      <div className={`flex items-center gap-5 transition-all duration-1000 ease-out delay-700 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        {SOCIALS.map(s => (
-          <a
-            key={s.name}
-            href={s.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={s.name}
-            className="text-charcoal-light hover:text-rose-dark transition-colors duration-300"
-          >
-            <SocialIcon type={s.icon} />
-          </a>
-        ))}
-      </div>
-
     </section>
   )
 }
 
 function About() {
   return (
-    <section id="about" className="py-24 md:py-32 px-6 md:px-12">
+    <section id="about" className="py-24 md:py-32 px-6 md:px-12 relative">
+      <Sparkle className="absolute top-20 right-12 md:right-32 w-4 h-4 text-pink animate-float-slow" />
+
       <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-center">
         <Reveal direction="left" className="order-2 md:order-1">
-          <div className="aspect-[3/4] rounded-sm overflow-hidden">
-            <img
-              src={ABOUT_PHOTO}
-              alt="Kaitlyn at the Golden Gate Bridge"
-              className="w-full h-full object-cover"
-            />
+          <div className="relative">
+            {/* Pink frame accent */}
+            <div className="absolute -top-4 -left-4 w-full h-full bg-pink-soft rounded-sm -z-0" />
+            <div className="relative aspect-[3/4] rounded-sm overflow-hidden shadow-lg shadow-pink/20">
+              <img
+                src={ABOUT_PHOTO}
+                alt="Kaitlyn at the Golden Gate Bridge"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <Heart className="absolute -bottom-4 -right-4 w-10 h-10 text-pink-deep animate-float" />
           </div>
         </Reveal>
 
         <div className="order-1 md:order-2">
           <Reveal delay={0}>
-            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">About</p>
+            <p className="text-xs tracking-[0.3em] uppercase text-pink-deep mb-4 flex items-center gap-2">
+              <Sparkle className="w-3 h-3" /> About <Sparkle className="w-3 h-3" />
+            </p>
           </Reveal>
           <Reveal delay={100}>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-              hiii i'm kaitlyn!
+              hiii i'm <span className="text-pink-deep italic">kaitlyn!</span>
             </h2>
           </Reveal>
           <Reveal delay={200}>
@@ -270,13 +336,18 @@ function About() {
 
 function Sculpt() {
   return (
-    <section id="sculpt" className="py-24 md:py-32 px-6 md:px-12 bg-cream-dark">
-      <div className="max-w-5xl mx-auto">
+    <section id="sculpt" className="py-24 md:py-32 px-6 md:px-12 bg-pink-soft/40 relative overflow-hidden">
+      <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-pink-light/30 blur-3xl pointer-events-none" />
+      <Heart className="absolute top-16 left-12 w-5 h-5 text-pink-deep animate-float-slow" />
+
+      <div className="max-w-5xl mx-auto relative">
         <div className="text-center mb-16">
           <Reveal>
-            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Fitness</p>
+            <p className="text-xs tracking-[0.3em] uppercase text-pink-deep mb-4 flex items-center justify-center gap-2">
+              <Sparkle className="w-3 h-3" /> Fitness <Sparkle className="w-3 h-3" />
+            </p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-              Sculpt With Kaitlyn
+              Sculpt With <span className="text-pink-deep italic">Kaitlyn</span>
             </h2>
             <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
               high-energy sculpt classes that'll leave you feeling so good.
@@ -292,7 +363,8 @@ function Sculpt() {
             { title: 'Pop-Ups', desc: 'collaborative fitness events with local brands and studios around the city.' },
           ].map((item, i) => (
             <Reveal key={item.title} delay={i * 150}>
-              <div className="bg-cream p-8 rounded-sm text-center h-full">
+              <div className="bg-cream p-8 rounded-sm text-center h-full border border-pink-light/40 hover:border-pink hover:shadow-lg hover:shadow-pink/20 transition-all duration-300">
+                <Heart className="w-5 h-5 text-pink-deep mx-auto mb-4" />
                 <h3 className="font-serif text-xl text-charcoal mb-3">{item.title}</h3>
                 <p className="text-charcoal-light font-light text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -306,7 +378,7 @@ function Sculpt() {
               href="https://docs.google.com/forms/d/1ranJpPom8hAU1uqbLTQHb5sXI2V574UqFitPK3BmlXY/edit"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-3 border border-charcoal text-charcoal text-sm tracking-widest uppercase hover:bg-charcoal hover:text-cream transition-all duration-300"
+              className="inline-block px-10 py-4 bg-pink-deep text-cream text-sm tracking-widest uppercase rounded-full hover:bg-pink-darker hover:scale-105 shadow-lg shadow-pink/40 transition-all duration-300"
             >
               Book a Session
             </a>
@@ -319,13 +391,18 @@ function Sculpt() {
 
 function Shop() {
   return (
-    <section id="shop" className="py-24 md:py-32 px-6 md:px-12">
-      <div className="max-w-5xl mx-auto">
+    <section id="shop" className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+      <Sparkle className="absolute top-20 left-12 w-4 h-4 text-pink animate-float" />
+      <Heart className="absolute bottom-20 right-16 w-5 h-5 text-pink-deep animate-float-slow" />
+
+      <div className="max-w-5xl mx-auto relative">
         <div className="text-center mb-16">
           <Reveal>
-            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Shop</p>
+            <p className="text-xs tracking-[0.3em] uppercase text-pink-deep mb-4 flex items-center justify-center gap-2">
+              <Sparkle className="w-3 h-3" /> Shop <Sparkle className="w-3 h-3" />
+            </p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-              Shop My Favorites
+              Shop My <span className="text-pink-deep italic">Favorites</span>
             </h2>
             <p className="max-w-lg mx-auto text-charcoal-light font-light leading-relaxed">
               everything i love, all in one place. from daily essentials to curated finds.
@@ -340,15 +417,16 @@ function Shop() {
                 href={shop.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group block p-8 rounded-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg h-full"
+                className="group block p-8 rounded-2xl transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-pink/20 h-full border border-pink-light/40"
                 style={{ backgroundColor: shop.color }}
               >
-                <h3 className="font-serif text-lg text-charcoal mb-2 group-hover:text-rose-dark transition-colors">
+                <h3 className="font-serif text-xl text-charcoal mb-2 group-hover:text-pink-deep transition-colors">
                   {shop.name}
                 </h3>
-                <p className="text-charcoal-light font-light text-sm">{shop.desc}</p>
-                <span className="inline-block mt-4 text-xs tracking-widest uppercase text-rose-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  Visit &rarr;
+                <p className="text-charcoal-light font-light text-sm mb-4">{shop.desc}</p>
+                <span className="inline-flex items-center gap-1 text-xs tracking-widest uppercase text-pink-deep font-medium">
+                  Visit
+                  <span className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
                 </span>
               </a>
             </Reveal>
@@ -361,13 +439,17 @@ function Shop() {
 
 function Gallery() {
   return (
-    <section id="gallery" className="py-24 md:py-32 px-6 md:px-12 bg-cream-dark">
-      <div className="max-w-6xl mx-auto">
+    <section id="gallery" className="py-24 md:py-32 px-6 md:px-12 bg-pink-soft/40 relative overflow-hidden">
+      <div className="absolute -bottom-32 -left-32 w-96 h-96 rounded-full bg-pink-light/30 blur-3xl pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto relative">
         <div className="text-center mb-16">
           <Reveal>
-            <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Gallery</p>
+            <p className="text-xs tracking-[0.3em] uppercase text-pink-deep mb-4 flex items-center justify-center gap-2">
+              <Sparkle className="w-3 h-3" /> Gallery <Sparkle className="w-3 h-3" />
+            </p>
             <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight">
-              Moments
+              <span className="italic text-pink-deep">moments</span> &amp; vibes
             </h2>
           </Reveal>
         </div>
@@ -379,12 +461,12 @@ function Gallery() {
                 href={img.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group aspect-square rounded-sm overflow-hidden block"
+                className="group aspect-square rounded-2xl overflow-hidden block ring-2 ring-cream hover:ring-pink-deep/40 transition-all duration-300"
               >
                 <img
                   src={img.src}
                   alt={img.alt}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
               </a>
@@ -398,7 +480,7 @@ function Gallery() {
               href="https://instagram.com/kaitlynedejer"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm tracking-widest uppercase text-charcoal-light hover:text-rose-dark transition-colors"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-cream text-pink-deep border border-pink-deep/30 rounded-full text-sm tracking-widest uppercase hover:bg-pink-deep hover:text-cream hover:border-pink-deep transition-all duration-300"
             >
               <SocialIcon type="ig" />
               Follow Along
@@ -412,25 +494,30 @@ function Gallery() {
 
 function Contact() {
   return (
-    <section id="contact" className="py-24 md:py-32 px-6 md:px-12">
-      <div className="max-w-3xl mx-auto text-center">
+    <section id="contact" className="py-24 md:py-32 px-6 md:px-12 relative overflow-hidden">
+      <Heart className="absolute top-16 left-12 md:left-1/4 w-5 h-5 text-pink-deep animate-float" />
+      <Sparkle className="absolute bottom-24 right-16 md:right-1/4 w-5 h-5 text-pink animate-float-slow" />
+
+      <div className="max-w-3xl mx-auto text-center relative">
         <Reveal>
-          <p className="text-xs tracking-[0.3em] uppercase text-rose-dark mb-4">Get In Touch</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-pink-deep mb-4 flex items-center justify-center gap-2">
+            <Sparkle className="w-3 h-3" /> Get In Touch <Sparkle className="w-3 h-3" />
+          </p>
           <h2 className="font-serif text-4xl md:text-5xl font-light text-charcoal leading-tight mb-6">
-            Let's Work Together
+            let's <span className="italic text-pink-deep">work together</span>
           </h2>
         </Reveal>
         <Reveal delay={150}>
           <p className="text-charcoal-light font-light leading-relaxed mb-10 max-w-lg mx-auto">
             interested in collaborations, brand partnerships, or booking a sculpt session?
-            i'd love to hear from you.
+            i'd love to hear from you <Heart className="inline w-3 h-3 text-pink-deep -mt-1" />
           </p>
         </Reveal>
 
         <Reveal delay={300}>
           <a
             href="mailto:kaitlynedejer@yahoo.com"
-            className="inline-block px-10 py-4 bg-charcoal text-cream text-sm tracking-widest uppercase hover:bg-rose-dark transition-colors duration-300"
+            className="inline-block px-12 py-4 bg-pink-deep text-cream text-sm tracking-widest uppercase rounded-full hover:bg-pink-darker hover:scale-105 shadow-lg shadow-pink/40 transition-all duration-300"
           >
             Say Hello
           </a>
@@ -445,7 +532,7 @@ function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.name}
-                className="text-charcoal-light hover:text-rose-dark transition-colors duration-300"
+                className="text-charcoal-light hover:text-pink-deep hover:scale-110 transition-all duration-300"
               >
                 <SocialIcon type={s.icon} />
               </a>
@@ -459,10 +546,12 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="py-8 px-6 border-t border-rose-light/50">
+    <footer className="py-10 px-6 border-t border-pink-light/50 bg-cream">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-warm-gray tracking-wide">
-        <span className="font-serif text-sm text-charcoal-light">Kaitlyn Edejer</span>
-        <span>&copy; {new Date().getFullYear()} &middot; All rights reserved</span>
+        <span className="font-serif text-sm text-charcoal-light flex items-center gap-2">
+          Kaitlyn Edejer <Heart className="w-3 h-3 text-pink-deep" />
+        </span>
+        <span>&copy; {new Date().getFullYear()} &middot; made with love in sf</span>
       </div>
     </footer>
   )
@@ -473,9 +562,10 @@ export default function App() {
     <div className="overflow-x-hidden">
       <Nav />
       <Hero />
+      <Marquee />
+      <Shop />
       <About />
       <Sculpt />
-      <Shop />
       <Gallery />
       <Contact />
       <Footer />

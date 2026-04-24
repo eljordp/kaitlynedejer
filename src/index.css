@@ -3,14 +3,27 @@
 @theme {
   --font-serif: 'Cormorant Garamond', 'Georgia', serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
-  --color-cream: #FEFBF6;
-  --color-cream-dark: #F7F2EB;
-  --color-rose: #C4899B;
-  --color-rose-light: #F0DDE0;
-  --color-rose-dark: #A67182;
-  --color-charcoal: #2D2A26;
-  --color-charcoal-light: #5C5650;
-  --color-warm-gray: #9B9490;
+
+  /* Cream tones (warm, slightly pink-tinted) */
+  --color-cream: #FFF8F3;
+  --color-cream-dark: #FCEEE8;
+
+  /* Pink palette */
+  --color-pink-soft: #FFE4EA;
+  --color-pink-light: #FFC9D6;
+  --color-pink: #FF9FB5;
+  --color-pink-deep: #E85D7F;
+  --color-pink-darker: #C44569;
+
+  /* Legacy rose tokens kept for backwards compat */
+  --color-rose: #FF9FB5;
+  --color-rose-light: #FFE4EA;
+  --color-rose-dark: #E85D7F;
+
+  /* Text */
+  --color-charcoal: #3D2C2E;
+  --color-charcoal-light: #6B5558;
+  --color-warm-gray: #A89696;
 }
 
 html {
@@ -27,6 +40,35 @@ body {
 }
 
 ::selection {
-  background: var(--color-rose-light);
+  background: var(--color-pink-light);
   color: var(--color-charcoal);
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+/* Subtle floating animation for decorations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(3deg); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-2deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
 }
