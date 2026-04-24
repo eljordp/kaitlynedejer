@@ -63,7 +63,7 @@ const GALLERY_IMAGES = [
 ]
 
 const PROFILE_PIC = '/img/gallery-3.jpg'
-const ABOUT_PHOTO = '/img/gallery-8.jpg'
+const ABOUT_PHOTO = '/img/gallery-5.jpg'
 
 // Scroll reveal hook
 function useReveal(options = {}) {
